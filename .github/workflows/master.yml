@@ -45,7 +45,7 @@ jobs:
         uses: appleboy/ssh-action@v0.1.4
         with:
           host: ${{ secrets.AWS_URL }}
-          username: ec2-user
+          username: ${{ secrets.AWS_USER }}
           key: ${{ secrets.AWS_PRIVATE_KEY }}
           envs: GITHUB_SHA
           script: |
