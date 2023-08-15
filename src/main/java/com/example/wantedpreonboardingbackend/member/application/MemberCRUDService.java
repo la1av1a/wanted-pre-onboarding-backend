@@ -1,5 +1,6 @@
 package com.example.wantedpreonboardingbackend.member.application;
 
+import com.example.wantedpreonboardingbackend.common.security.exception.MemberNotFoundException;
 import com.example.wantedpreonboardingbackend.member.domain.Member;
 import com.example.wantedpreonboardingbackend.member.domain.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,5 +21,11 @@ public class MemberCRUDService {
     @Transactional
     public void saveMember(Member member){
         memberRepository.save(member);
+    }
+
+    @Transactional(readOnly = true)
+    public Member memberSignIn(String memberName){
+        return memberRepository.findMemberByMemberName(memberName).orElseThrow
+            (()->new MemberNotFoundException("아이디 또는 비밀번호가 일치하지 않습니다."));
     }
 }

@@ -22,7 +22,7 @@ class MemberRepositoryTest {
     void existsUserByUserName() {
 
         //given
-        Member member = createMember("example@example.com",passwordEncoder.encode("1234"));
+        Member member = createMember("example@example.com",passwordEncoder.encode("12345678"),Role.ROLE_USER);
         save(member);
 
         String testUserName = "example@example.com";
@@ -37,12 +37,28 @@ class MemberRepositoryTest {
         Assertions.assertThat(expectNotExist).isFalse();
     }
 
-    void save(Member member){
-        memberRepository.save(member);
+    @Test
+    void memberSaveTest(){
+        //given
+        String memberName = "test@example.com";
+        String memberPw = "password";
+        Member member = createMember(memberName,memberPw,Role.ROLE_USER);
+
+        //when
+        Member savedMember = save(member);
+
+        //then
+        Assertions.assertThat(savedMember.getMemberName()).isEqualTo(memberName);
+        Assertions.assertThat(passwordEncoder.matches(memberPw,savedMember.getMemberPw())).isTrue();
+        Assertions.assertThat(savedMember.getRole()).isEqualTo(Role.ROLE_USER);
     }
 
-    Member createMember(String memberName, String password){
+    Member save(Member member){
+       return memberRepository.save(member);
+    }
 
-        return new Member(memberName,passwordEncoder.encode(password));
+    Member createMember(String memberName, String password,Role role){
+
+        return new Member(memberName,passwordEncoder.encode(password),role);
     }
 }
