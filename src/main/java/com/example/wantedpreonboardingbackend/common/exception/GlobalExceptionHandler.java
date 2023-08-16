@@ -8,12 +8,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
 
 @RestControllerAdvice
 @Slf4j(topic = "GlobalExceptionHandler")
 public class GlobalExceptionHandler {
 
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ResponseDTO<Void>> handleValidationExceptions(
         MethodArgumentNotValidException e) {
@@ -28,6 +31,7 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(new ResponseDTO<>(null, combinedErrorMessage), HttpStatus.BAD_REQUEST);
     }
 
+    @ResponseStatus(HttpStatus.CONFLICT)
     @ExceptionHandler(MemberAlreadyExistsException.class)
     public ResponseEntity<ResponseDTO<Void>> handleUserAlreadyExistsException(
         MemberAlreadyExistsException e){
@@ -35,6 +39,7 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(ResponseDTO.ofError(e.getMessage()), HttpStatus.CONFLICT);
     }
 
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(MemberNotFoundException.class)
     public ResponseEntity<ResponseDTO<Void>> handleMemberNotFoundException(
         MemberNotFoundException e){
@@ -42,12 +47,14 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(ResponseDTO.ofError(e.getMessage()), HttpStatus.NOT_FOUND);
     }
 
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
     @ExceptionHandler(NoUpdateContentException.class)
     public ResponseEntity<ResponseDTO<Void>> handleNoUpdateContentException(
         NoUpdateContentException e){
         log.warn(e.getMessage());
         return new ResponseEntity<>(ResponseDTO.ofError(e.getMessage()), HttpStatus.UNPROCESSABLE_ENTITY);
     }
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<ResponseDTO<Void>> handleNotFoundException(
         NotFoundException e){

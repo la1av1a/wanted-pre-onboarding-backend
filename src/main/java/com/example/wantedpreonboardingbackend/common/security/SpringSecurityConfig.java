@@ -16,12 +16,23 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SpringSecurityConfig {
 
     private final JwtFilter jwtFilter;
+
+    private final String[] swaggerURL = {
+        "/v3/api-docs", "/configuration/ui",
+        "/swagger-resources", "/configuration/security",
+        "/swagger-ui.html", "/webjars/**", "/swagger/**",
+        "/swagger-ui/**", "/swagger-resources/**","/v3/**"
+    };
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
             .csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(request -> request
-                .anyRequest().permitAll()
+                .requestMatchers(swaggerURL).permitAll()
+                .requestMatchers("/member/**").permitAll()
+                .requestMatchers("GET","/board/**").permitAll()
+                .anyRequest().authenticated()
             );
 
         http.addFilterBefore(jwtFilter,UsernamePasswordAuthenticationFilter.class);
