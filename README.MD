@@ -13,7 +13,7 @@ Endpoint : http://ec2-54-180-35-193.ap-northeast-2.compute.amazonaws.com:8080/
 http://ec2-54-180-35-193.ap-northeast-2.compute.amazonaws.com:8080/swagger-ui/index.html
 
 <h2>데이터베이스 테이블 구조</h2>
-![img_1.png](img_1.png)
+<img src=https://velog.velcdn.com/images/rossy029/post/39001619-cb70-449b-bcd7-6632c7f79392/image.png>
 
 <h2>구현한 API의 동작을 촬영한 데모 영상 링크</h2>
 https://youtu.be/6XT7HJsCzWI
