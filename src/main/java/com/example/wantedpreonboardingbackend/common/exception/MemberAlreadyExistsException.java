@@ -1,4 +1,4 @@
-package com.example.wantedpreonboardingbackend.common.security.exception;
+package com.example.wantedpreonboardingbackend.common.exception;
 
 import lombok.Getter;
 

@@ -1,5 +1,6 @@
 package com.example.wantedpreonboardingbackend.board.domain;
 
+import com.example.wantedpreonboardingbackend.board.presentation.dto.BoardFindingResponseDTO;
 import com.example.wantedpreonboardingbackend.common.BaseTime;
 import com.example.wantedpreonboardingbackend.member.domain.Member;
 import jakarta.persistence.Column;
@@ -38,6 +39,18 @@ public class Board extends BaseTime {
     public Board(Member author, String title, String content) {
         this.author = author;
         this.title = title;
+        this.content = content;
+    }
+
+    public BoardFindingResponseDTO toResponseDTO(){
+        return new BoardFindingResponseDTO(id,title,content,author.getMemberName(),getCreatedDate(),getLastModifiedDate());
+    }
+
+    public void updateTitle(String title){
+        this.title = title;
+    }
+
+    public void updateContent(String content){
         this.content = content;
     }
 }

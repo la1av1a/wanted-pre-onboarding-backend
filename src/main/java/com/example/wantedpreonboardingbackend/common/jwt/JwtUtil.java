@@ -1,7 +1,7 @@
 package com.example.wantedpreonboardingbackend.common.jwt;
 
 import com.example.wantedpreonboardingbackend.common.security.CustomUserDetails;
-import com.example.wantedpreonboardingbackend.common.security.exception.UnAuthorizedException;
+import com.example.wantedpreonboardingbackend.common.exception.UnAuthorizedException;
 import com.example.wantedpreonboardingbackend.member.domain.Role;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.SignatureException;

@@ -1,4 +1,4 @@
-package com.example.wantedpreonboardingbackend.common.security.exception;
+package com.example.wantedpreonboardingbackend.common.exception;
 
 import com.example.wantedpreonboardingbackend.common.response.ResponseDTO;
 import java.util.List;
@@ -40,6 +40,13 @@ public class GlobalExceptionHandler {
         MemberNotFoundException e){
         log.warn(e.getMessage());
         return new ResponseEntity<>(ResponseDTO.ofError(e.getMessage()), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(NoUpdateContentException.class)
+    public ResponseEntity<ResponseDTO<Void>> handleNoUpdateContentException(
+        NoUpdateContentException e){
+        log.warn(e.getMessage());
+        return new ResponseEntity<>(ResponseDTO.ofError(e.getMessage()), HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
 }

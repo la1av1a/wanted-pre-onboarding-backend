@@ -1,6 +1,6 @@
 package com.example.wantedpreonboardingbackend.member.application;
 
-import com.example.wantedpreonboardingbackend.common.security.exception.MemberNotFoundException;
+import com.example.wantedpreonboardingbackend.common.exception.MemberNotFoundException;
 import com.example.wantedpreonboardingbackend.member.domain.Member;
 import com.example.wantedpreonboardingbackend.member.domain.MemberRepository;
 import lombok.RequiredArgsConstructor;
