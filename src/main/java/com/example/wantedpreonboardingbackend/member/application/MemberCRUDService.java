@@ -24,8 +24,14 @@ public class MemberCRUDService {
     }
 
     @Transactional(readOnly = true)
-    public Member memberSignIn(String memberName){
+    public Member findMemberByMemberName(String memberName){
         return memberRepository.findMemberByMemberName(memberName).orElseThrow
             (()->new MemberNotFoundException("아이디 또는 비밀번호가 일치하지 않습니다."));
+    }
+
+    @Transactional(readOnly = true)
+    public Member findMemberById(Long id){
+        return memberRepository.findMemberByMemberId(id).orElseThrow
+            (()->new MemberNotFoundException("존재하지 않는 유저입니다."));
     }
 }

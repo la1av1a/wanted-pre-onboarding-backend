@@ -10,7 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Import(PasswordEncoderConfig.class)
 @DataJpaTest
-class MemberRepositoryTest {
+public class MemberRepositoryTest {
 
     @Autowired
     private MemberRepository memberRepository;
