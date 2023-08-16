@@ -2,6 +2,8 @@ package com.example.wantedpreonboardingbackend.member.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -25,13 +27,18 @@ public class Member {
     private String memberPw;
 
     @Column
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
+    @Column
     private LocalDateTime createdDate;
 
     @Column
     private LocalDateTime LastModifiedDate;
 
-    public Member(String memberName, String memberPw) {
+    public Member(String memberName, String memberPw, Role role) {
         this.memberName = memberName;
         this.memberPw = memberPw;
+        this.role = role;
     }
 }
