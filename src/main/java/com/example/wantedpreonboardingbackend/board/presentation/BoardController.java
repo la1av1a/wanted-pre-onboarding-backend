@@ -32,6 +32,6 @@ public class BoardController {
 
         boardService.posting(requestDTO,Long.parseLong(userDetails.getId()));
 
-        return new ResponseEntity<>(ResponseDTO.ofSuccess("DD"), HttpStatus.OK);
+        return new ResponseEntity<>(ResponseDTO.ofSuccess("게시글 작성에 성공하였습니다."), HttpStatus.OK);
     }
 }
