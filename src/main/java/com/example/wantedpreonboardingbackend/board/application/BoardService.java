@@ -2,11 +2,14 @@ package com.example.wantedpreonboardingbackend.board.application;
 
 import com.example.wantedpreonboardingbackend.board.domain.Board;
 import com.example.wantedpreonboardingbackend.board.presentation.dto.BoardFindingResponseDTO;
+import com.example.wantedpreonboardingbackend.board.presentation.dto.BoardListResponseDTO;
 import com.example.wantedpreonboardingbackend.board.presentation.dto.BoardPostingRequestDTO;
 import com.example.wantedpreonboardingbackend.common.exception.NoUpdateContentException;
 import com.example.wantedpreonboardingbackend.member.application.MemberCRUDService;
 import com.example.wantedpreonboardingbackend.member.domain.Member;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -48,5 +51,14 @@ public class BoardService {
         if(content != null){
             board.updateContent(content);
         }
+    }
+
+    public List<BoardListResponseDTO> findBoardList(Pageable pageable){
+        return boardCRUDService.findBoardList(pageable).map(this::boardToListResponseDTO).toList();
+    }
+
+    private BoardListResponseDTO boardToListResponseDTO(Board board){
+        return new BoardListResponseDTO(board.getId(),board.getAuthor().getMemberName(),
+            board.getTitle(),board.getContent(),board.getCreatedDate(),board.getLastModifiedDate());
     }
 }

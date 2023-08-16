@@ -1,5 +1,7 @@
 package com.example.wantedpreonboardingbackend.board.presentation;
 
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.jsonPath;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -16,6 +18,7 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -25,12 +28,14 @@ import org.springframework.security.test.context.support.TestExecutionEvent;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
 @Import(MemberRepositoryTest.class)
 @SpringBootTest
 @AutoConfigureMockMvc
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class BoardControllerTest {
 
     @Autowired
@@ -130,6 +135,50 @@ class BoardControllerTest {
 
             //then
             resultActions.andExpect(status().isUnprocessableEntity());
+        }
+    }
+
+    @Nested
+    class PageableTest{
+
+        @BeforeEach
+        void setUp(){
+            for(int i=0;i<22;i++){
+                setBoard("title"+i,"content"+i);
+            }
+        }
+
+        @Test
+        void firstPageTest() throws Exception {
+            mockMvc.perform(get("/board/")
+                    .param("size","10"))
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.data[0].title").value("title21"));
+        }
+
+        @Test
+        void middlePageTest() throws Exception {
+            mockMvc.perform(get("/board/")
+                    .param("size","10")
+                    .param("page","1")
+                )
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.data[0].title").value("title11"));
+        }
+
+        @Test
+        void lastPageTest() throws Exception {
+            mockMvc.perform(get("/board/")
+                    .param("size","10")
+                    .param("page","2")
+                )
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.data.length()").value(2));
+        }
+
+        private void setBoard(String title,String content){
+            Board board = new Board(member,title,content);
+            boardRepository.save(board);
         }
     }
 }
