@@ -6,6 +6,8 @@ import com.example.wantedpreonboardingbackend.board.presentation.dto.BoardListRe
 import com.example.wantedpreonboardingbackend.board.presentation.dto.BoardPostingRequestDTO;
 import com.example.wantedpreonboardingbackend.common.response.ResponseDTO;
 import com.example.wantedpreonboardingbackend.common.security.CustomUserDetails;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -23,12 +25,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
  * 게시글 Controller
  */
 
+@Tag(name = "게시글 관련 API", description = "게시글 관련 API")
 @RestController
 @RequestMapping("/board")
 @RequiredArgsConstructor
@@ -36,6 +40,8 @@ public class BoardController {
 
     private final BoardService boardService;
 
+
+    @Operation(summary = "게시글 작성", description = "게시글 작성 API")
     @PostMapping("/")
     public ResponseEntity<ResponseDTO<Void>> posting(
         @RequestBody @Valid BoardPostingRequestDTO requestDTO,
@@ -46,6 +52,7 @@ public class BoardController {
         return new ResponseEntity<>(ResponseDTO.ofSuccess("게시글 작성에 성공하였습니다."), HttpStatus.OK);
     }
 
+    @Operation(summary = "게시글 조회", description = "게시글 조회 API")
     @GetMapping("/{boardId}")
     public ResponseEntity<ResponseDTO<BoardFindingResponseDTO>> getBoard(
         @PathVariable(value = "boardId") Long boardId
@@ -54,6 +61,7 @@ public class BoardController {
             "게시글 조회에 성공하였습니다."), HttpStatus.OK);
     }
 
+    @Operation(summary = "게시글 수정", description = "게시글 수정 API")
     @PatchMapping("/{boardId}")
     public ResponseEntity<ResponseDTO<Void>> patchBoard(
         @PathVariable(value = "boardId") Long boardId,
@@ -66,11 +74,13 @@ public class BoardController {
         return new ResponseEntity<>(ResponseDTO.ofSuccess("게시글 수정에 성공하였습니다."), HttpStatus.OK);
     }
 
+    @Operation(summary = "게시글 목록 조회", description = "게시글 목록 조회 API")
     @GetMapping("/")
     public ResponseEntity<ResponseDTO<List<BoardListResponseDTO>>> getBoardList(@PageableDefault(sort = "id",direction = Direction.DESC) Pageable pageable){
         return new ResponseEntity<>(new ResponseDTO<>(boardService.findBoardList(pageable),"게시판 조회에 성공하였습니다."), HttpStatus.OK);
     }
 
+    @Operation(summary = "게시글 삭제", description = "게시글 삭제 API")
     @DeleteMapping("/{boardId}")
     public ResponseEntity<ResponseDTO<Void>> deleteBoard(
         @PathVariable(value = "boardId") Long boardId,
