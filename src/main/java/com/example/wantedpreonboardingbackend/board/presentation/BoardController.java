@@ -15,6 +15,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -68,5 +69,15 @@ public class BoardController {
     @GetMapping("/")
     public ResponseEntity<ResponseDTO<List<BoardListResponseDTO>>> getBoardList(@PageableDefault(sort = "id",direction = Direction.DESC) Pageable pageable){
         return new ResponseEntity<>(new ResponseDTO<>(boardService.findBoardList(pageable),"게시판 조회에 성공하였습니다."), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{boardId}")
+    public ResponseEntity<ResponseDTO<Void>> deleteBoard(
+        @PathVariable(value = "boardId") Long boardId,
+        @AuthenticationPrincipal CustomUserDetails userDetails
+    ){
+        boardService.deleteBoard(boardId,Long.parseLong(userDetails.getId()));
+
+        return new ResponseEntity<>(ResponseDTO.ofSuccess("게시글 삭제에 성공하였습니다."), HttpStatus.OK);
     }
 }

@@ -1,6 +1,7 @@
 package com.example.wantedpreonboardingbackend.board.presentation;
 
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.jsonPath;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -176,9 +177,36 @@ class BoardControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.data.length()").value(2));
         }
 
-        private void setBoard(String title,String content){
+        @Nested
+        class DeleteBoard{
+
+            @Test
+            @WithUserDetails(value = "test@exmaple.com",setupBefore = TestExecutionEvent.TEST_EXECUTION)
+            void deleteExpectSuccess() throws Exception {
+                //given
+                Board savedBoard = setBoard("title","content");
+
+                //when
+                mockMvc.perform(delete("/board/{boardId}",savedBoard.getId()))
+                    .andExpect(status().isOk());
+
+                //then
+                Assertions.assertThat(boardRepository.findById(savedBoard.getId()).isEmpty()).isTrue();
+            }
+            @Test
+            @WithUserDetails(value = "test@exmaple.com",setupBefore = TestExecutionEvent.TEST_EXECUTION)
+            void deleteExpectFail() throws Exception {
+                //when
+                ResultActions resultActions = mockMvc.perform(delete("/board/{boardId}",65550505L));
+
+                //then
+                resultActions.andExpect(status().isNotFound());
+            }
+        }
+
+        private Board setBoard(String title,String content){
             Board board = new Board(member,title,content);
-            boardRepository.save(board);
+            return boardRepository.save(board);
         }
     }
 }

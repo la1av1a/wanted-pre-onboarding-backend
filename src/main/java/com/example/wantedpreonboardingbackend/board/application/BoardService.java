@@ -53,6 +53,12 @@ public class BoardService {
         }
     }
 
+    public void deleteBoard(Long id,Long memberId){
+        Board board = boardCRUDService.findBoardByBoardIdAndMemberId(id,memberId);
+
+        boardCRUDService.deleteBoard(board);
+    }
+
     public List<BoardListResponseDTO> findBoardList(Pageable pageable){
         return boardCRUDService.findBoardList(pageable).map(this::boardToListResponseDTO).toList();
     }

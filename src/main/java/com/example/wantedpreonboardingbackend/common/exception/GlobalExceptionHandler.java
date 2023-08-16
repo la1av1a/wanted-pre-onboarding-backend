@@ -48,5 +48,11 @@ public class GlobalExceptionHandler {
         log.warn(e.getMessage());
         return new ResponseEntity<>(ResponseDTO.ofError(e.getMessage()), HttpStatus.UNPROCESSABLE_ENTITY);
     }
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<ResponseDTO<Void>> handleNotFoundException(
+        NotFoundException e){
+        log.warn(e.getMessage());
+        return new ResponseEntity<>(ResponseDTO.ofError(e.getMessage()), HttpStatus.NOT_FOUND);
+    }
 
 }
