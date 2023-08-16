@@ -33,7 +33,7 @@ public class MemberService {
     }
 
     public MemberTokenResponseDTO memberSignIn(MemberRequestDTO requestDTO){
-        Member member = memberCRUDService.memberSignIn(requestDTO.memberName());
+        Member member = memberCRUDService.findMemberByMemberName(requestDTO.memberName());
 
         if(!isPasswordMatch(requestDTO.memberPw(),member.getMemberPw())){
             throw new MemberAlreadyExistsException("아이디 또는 비밀번호가 일치하지 않습니다.");

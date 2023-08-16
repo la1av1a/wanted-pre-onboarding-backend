@@ -12,8 +12,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -30,8 +33,14 @@ public class JwtFilter extends OncePerRequestFilter {
         try {
             String jwt = getJwtFromHeader(request);
             if (StringUtils.hasText(jwt) && jwtUtil.validateToken(jwt)) {
-                Authentication authentication = jwtUtil.getAuthenticationFromToken(jwt);
-                SecurityContextHolder.getContext().setAuthentication(authentication);
+
+                UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
+                    jwtUtil.getAuthenticationFromToken(jwt).getPrincipal(), null, jwtUtil.getAuthenticationFromToken(jwt).getAuthorities());
+
+                usernamePasswordAuthenticationToken
+                    .setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
+                SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
             }
         } catch (Exception ex) {
             ex.printStackTrace();

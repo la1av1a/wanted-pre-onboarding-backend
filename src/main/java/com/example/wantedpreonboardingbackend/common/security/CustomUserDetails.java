@@ -44,7 +44,7 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public String getPassword() {
-        return "";
+        return "1234";
     }
 
     @Override

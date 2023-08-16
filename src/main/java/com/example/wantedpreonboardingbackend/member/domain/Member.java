@@ -1,5 +1,6 @@
 package com.example.wantedpreonboardingbackend.member.domain;
 
+import com.example.wantedpreonboardingbackend.common.BaseTime;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -14,7 +15,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @Entity
-public class Member {
+public class Member extends BaseTime {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,12 +30,6 @@ public class Member {
     @Column
     @Enumerated(EnumType.STRING)
     private Role role;
-
-    @Column
-    private LocalDateTime createdDate;
-
-    @Column
-    private LocalDateTime LastModifiedDate;
 
     public Member(String memberName, String memberPw, Role role) {
         this.memberName = memberName;
