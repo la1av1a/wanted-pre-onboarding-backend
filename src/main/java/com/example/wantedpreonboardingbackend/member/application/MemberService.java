@@ -2,7 +2,7 @@ package com.example.wantedpreonboardingbackend.member.application;
 
 import com.example.wantedpreonboardingbackend.common.jwt.JwtUtil;
 import com.example.wantedpreonboardingbackend.common.jwt.Subject;
-import com.example.wantedpreonboardingbackend.common.security.exception.MemberAlreadyExistsException;
+import com.example.wantedpreonboardingbackend.common.exception.MemberAlreadyExistsException;
 import com.example.wantedpreonboardingbackend.member.domain.Member;
 import com.example.wantedpreonboardingbackend.member.domain.Role;
 import com.example.wantedpreonboardingbackend.member.presentation.dto.MemberRequestDTO;
